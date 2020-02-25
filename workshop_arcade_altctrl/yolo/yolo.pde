@@ -10,7 +10,6 @@ import fisica.*;
 
 FWorld world;
 
-
 int circleCount = 20;
 float hole = 200;
 float topMargin = 50;
@@ -19,10 +18,8 @@ float sideMargin = 50;
 float xPos = 0;
 
 float obstacleMargin = 190;
-float obstacle2Margin = 190;
 
 float obstaclePosTop = 560;
-float obstacle2PosTop = 260;
 
 void setup() {
   size(500, 700);
@@ -89,27 +86,23 @@ void draw() {
   obstacle.setFriction(1);
   world.add(obstacle);
   
-  FPoly obstacle2 = new FPoly();
-  obstacle2.vertex(width-sideMargin, obstacle2PosTop+60);
-  obstacle2.vertex(width-sideMargin-obstacle2Margin, obstacle2PosTop+60);
-  obstacle2.vertex(width-sideMargin-obstacle2Margin, obstacle2PosTop+40);
-  obstacle2.vertex(width-sideMargin, obstacle2PosTop);
-  obstacle2.vertex(width-sideMargin, 0);
-  obstacle2.vertex(width, 0);
-  obstacle2.vertex(width, height);
-  obstacle2.vertex(width-sideMargin, height);
-  obstacle2.setStatic(true);
-  obstacle2.setFill(0);
-  obstacle2.setFriction(1);
-  world.add(obstacle2);
-  
   
   if((frameCount % 10) == 1){
     obstaclePosTop = obstaclePosTop - 10;
-    obstacle2PosTop = obstacle2PosTop - 10;
+  }
+  if(obstaclePosTop == 0){
+    obstaclePosTop = 560;
   }
   world.step();
   world.draw();
   world.remove(obstacle);
-  world.remove(obstacle2);
+}
+
+
+void keyPressed() {
+  try {
+    saveFrame("screenshot.png");
+  } 
+  catch (Exception e) {
+  }
 }
