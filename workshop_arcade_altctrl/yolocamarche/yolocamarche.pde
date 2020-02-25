@@ -18,9 +18,10 @@ float sideMargin = 50;
 float xPos = 0;
 
 float obstacleMargin = 190;
+float speed = 2;
 
-float obstaclePosTop = 460;
-float obstaclePosTop2 = 60;
+float obstaclePosTop = 60;
+float obstaclePosTop2 = 460;
 float obstaclePosTop3 = 260;
 float obstaclePosTop4 = 660;
 
@@ -67,11 +68,17 @@ void setup() {
   
   //Blob popping
   FBlob b = new FBlob();
-  b.setAsCircle(width/2, 20, 30, 20);
+  b.setAsCircle(width/2, 20, 30, 20); 
   b.setStroke(0);
   b.setStrokeWeight(0);
-  b.setFill(255);
+  b.setFill(0);
+  b.setFriction(0.01);
+  b.setRestitution(0.01);
+  b.setDamping(0);
+  b.setDensity(10);
+  b.setFrequency(0);
   world.add(b);
+
   
   
   
@@ -80,7 +87,7 @@ void setup() {
 }
 
 void draw() {
-  background(80, 120, 200);
+  background(255, 255, 255);
   
   FPoly obstacle = new FPoly();
     obstacle.vertex(width-sideMargin, obstaclePosTop+60);
@@ -90,6 +97,7 @@ void draw() {
     obstacle.setStatic(true);
     obstacle.setFill(0);
     obstacle.setFriction(1);
+    obstacle.setRestitution(6);
     world.add(obstacle);
     obstacle.setPosition(0, obstaclePosMouv);
     
@@ -101,6 +109,7 @@ void draw() {
     obstacle2.setStatic(true);
     obstacle2.setFill(0);
     obstacle2.setFriction(1);
+    obstacle2.setRestitution(6);
     world.add(obstacle2);
     obstacle2.setPosition(0, obstaclePosMouv2);
   
@@ -112,8 +121,9 @@ void draw() {
     obstacle3.setStatic(true);
     obstacle3.setFill(0);
     obstacle3.setFriction(1);
+    obstacle3.setRestitution(6);
     world.add(obstacle3);
-    obstacle3.setPosition(0, obstaclePosMouv);
+    obstacle3.setPosition(0, obstaclePosMouv3);
     
     FPoly obstacle4 = new FPoly();
     obstacle4.vertex(0+sideMargin, obstaclePosTop4+60);
@@ -123,29 +133,30 @@ void draw() {
     obstacle4.setStatic(true);
     obstacle4.setFill(0);
     obstacle4.setFriction(1);
+    obstacle4.setRestitution(6);
     world.add(obstacle4);
     obstacle4.setPosition(0, obstaclePosMouv4);
   
   //if((frameCount % 10) == 1){
-    obstaclePosMouv = obstaclePosMouv - 0.7;
-    obstaclePosMouv2 = obstaclePosMouv2 - 0.7;
-    obstaclePosMouv3 = obstaclePosMouv3 - 0.7;
-    obstaclePosMouv4 = obstaclePosMouv4 - 0.7;
+    obstaclePosMouv = obstaclePosMouv - speed;
+    obstaclePosMouv2 = obstaclePosMouv2 - speed;
+    obstaclePosMouv3 = obstaclePosMouv3 - speed;
+    obstaclePosMouv4 = obstaclePosMouv4 - speed;
     
-    if(obstaclePosMouv <= -660){
-      obstaclePosMouv = 200;
+    if(obstaclePosMouv <= -150){
+      obstaclePosMouv = 660;
     }
     
-    if(obstaclePosMouv2 <= -660){
-      obstaclePosMouv2 = 200;
+    if(obstaclePosMouv2 <= -520){
+      obstaclePosMouv2 = 300;
     }
     
-    if(obstaclePosMouv3 <= -660){
-      obstaclePosMouv3 = 200;
+    if(obstaclePosMouv3 <= -340){
+      obstaclePosMouv3 = 460;
     }
     
-    if(obstaclePosMouv4 <= -660){
-      obstaclePosMouv4 = 200;
+    if(obstaclePosMouv4 <= -720){
+      obstaclePosMouv4 = 60;
     }
   //}
   
