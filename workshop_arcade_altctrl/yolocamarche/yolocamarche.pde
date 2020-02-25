@@ -70,7 +70,11 @@ void setup() {
 
 
   //Blob popping
+<<<<<<< HEAD
   b = new FBlob();
+=======
+  FBlob b = new FBlob();
+>>>>>>> 61de0fa2bda5848b75bb1a92f8ae12c9d21e8fed
   b.setAsCircle(width/2, 20, 30, 20); 
   b.setStroke(0);
   b.setStrokeWeight(0);
@@ -81,11 +85,94 @@ void setup() {
   b.setDensity(10);
   b.setFrequency(0);
   world.add(b);
+<<<<<<< HEAD
+=======
+
+  
+  
+  
+  
+  
+>>>>>>> 61de0fa2bda5848b75bb1a92f8ae12c9d21e8fed
 }
 
 void draw() {
   background(255, 255, 255);
+<<<<<<< HEAD
   spawnerUpdate();
+=======
+  
+  FPoly obstacle = new FPoly();
+    obstacle.vertex(width-sideMargin, obstaclePosTop+60);
+    obstacle.vertex(width-sideMargin-obstacleMargin, obstaclePosTop+60);
+    obstacle.vertex(width-sideMargin-obstacleMargin, obstaclePosTop+40);
+    obstacle.vertex(width-sideMargin, obstaclePosTop);
+    obstacle.setStatic(true);
+    obstacle.setFill(0);
+    obstacle.setFriction(1);
+    obstacle.setRestitution(6);
+    world.add(obstacle);
+    obstacle.setPosition(0, obstaclePosMouv);
+    
+    FPoly obstacle2 = new FPoly();
+    obstacle2.vertex(width-sideMargin, obstaclePosTop2+60);
+    obstacle2.vertex(width-sideMargin-obstacleMargin, obstaclePosTop2+60);
+    obstacle2.vertex(width-sideMargin-obstacleMargin, obstaclePosTop2+40);
+    obstacle2.vertex(width-sideMargin, obstaclePosTop2);
+    obstacle2.setStatic(true);
+    obstacle2.setFill(0);
+    obstacle2.setFriction(1);
+    obstacle2.setRestitution(6);
+    world.add(obstacle2);
+    obstacle2.setPosition(0, obstaclePosMouv2);
+  
+  FPoly obstacle3 = new FPoly();
+    obstacle3.vertex(0+sideMargin, obstaclePosTop3+60);
+    obstacle3.vertex(0+sideMargin+obstacleMargin, obstaclePosTop3+60);
+    obstacle3.vertex(0+sideMargin+obstacleMargin, obstaclePosTop3+40);
+    obstacle3.vertex(0+sideMargin, obstaclePosTop3);
+    obstacle3.setStatic(true);
+    obstacle3.setFill(0);
+    obstacle3.setFriction(1);
+    obstacle3.setRestitution(6);
+    world.add(obstacle3);
+    obstacle3.setPosition(0, obstaclePosMouv3);
+    
+    FPoly obstacle4 = new FPoly();
+    obstacle4.vertex(0+sideMargin, obstaclePosTop4+60);
+    obstacle4.vertex(0+sideMargin+obstacleMargin, obstaclePosTop4+60);
+    obstacle4.vertex(0+sideMargin+obstacleMargin, obstaclePosTop4+40);
+    obstacle4.vertex(0+sideMargin, obstaclePosTop4);
+    obstacle4.setStatic(true);
+    obstacle4.setFill(0);
+    obstacle4.setFriction(1);
+    obstacle4.setRestitution(6);
+    world.add(obstacle4);
+    obstacle4.setPosition(0, obstaclePosMouv4);
+  
+  //if((frameCount % 10) == 1){
+    obstaclePosMouv = obstaclePosMouv - speed;
+    obstaclePosMouv2 = obstaclePosMouv2 - speed;
+    obstaclePosMouv3 = obstaclePosMouv3 - speed;
+    obstaclePosMouv4 = obstaclePosMouv4 - speed;
+    
+    if(obstaclePosMouv <= -150){
+      obstaclePosMouv = 660;
+    }
+    
+    if(obstaclePosMouv2 <= -520){
+      obstaclePosMouv2 = 300;
+    }
+    
+    if(obstaclePosMouv3 <= -340){
+      obstaclePosMouv3 = 460;
+    }
+    
+    if(obstaclePosMouv4 <= -720){
+      obstaclePosMouv4 = 60;
+    }
+  //}
+>>>>>>> 61de0fa2bda5848b75bb1a92f8ae12c9d21e8fed
   
   obstacle();
 
