@@ -30,7 +30,7 @@ class Stamp {
     popMatrix();
     */
     
-    box = new FBox(300,200);
+    box = new FBox(b_length,b_height);
     box.setRotation(radians(angle));
     ///box.setPosition(pos.x, pos.y);
     box.setStatic(true);

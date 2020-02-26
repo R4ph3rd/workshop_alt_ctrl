@@ -15,7 +15,7 @@ import fisica.*;
 FWorld world;
 FBlob b;
 FPoly obstacle,obstacle2,obstacle3,obstacle4;
-FBox stamp_box ;
+FBox stamp_box, side;
 int circleCount = 20;
 float hole = 200;
 float topMargin = 50;
@@ -36,6 +36,8 @@ float obstaclePosMouv2 = 0;
 float obstaclePosMouv3 = 0;
 float obstaclePosMouv4 = 0;
 
+int b_length, b_height ;
+
 ArrayList<TrucPousse> trucs = new ArrayList<TrucPousse>();
 
 void setup(){
@@ -43,8 +45,8 @@ void setup(){
   smooth();
 
   printArray(Serial.list()); 
-  String portName = Serial.list()[0]; 
-  String contactPortName = Serial.list()[1];
+  String portName = Serial.list()[1]; 
+  String contactPortName = Serial.list()[0];
   myPort = new Serial(this, portName, 9600); 
   contactPort = new Serial(this, contactPortName, 9600);
   myPort.bufferUntil('\n');
@@ -55,6 +57,8 @@ void setup(){
   
   initColliders();
   
+  b_length = 350;
+  b_height = 150;
 }
 
 void draw(){
@@ -69,7 +73,7 @@ void draw(){
     translate(stampPos.x, stampPos.y);
     rotate(radians(angle));
     fill(0,50);
-    rect(0, 0, 300, 200);
+    rect(0 - (b_length/2), 0 - (b_height/2), b_length, b_height);
   popStyle();
   popMatrix();
 
@@ -86,12 +90,11 @@ void draw(){
     
   }
   
-    spawnerUpdate();
+  spawnerUpdate();
   
-  //obstacle();
 
   world.step();
-  world.draw();
+  world.drawDebug();
  /* 
   world.remove(obstacle);
   world.remove(obstacle2);
