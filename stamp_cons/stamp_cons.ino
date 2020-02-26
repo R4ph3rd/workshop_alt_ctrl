@@ -26,24 +26,28 @@ void setup() {
 }
 
 void loop() {
-  String json ;
-
+  currtouched = cap.touched();
+  
     for (uint8_t i=0; i<12; i++) {
     // it if *is* touched and *wasnt* touched before, alert!
     if ((currtouched & _BV(i)) && !(lasttouched & _BV(i)) ) {
-      json = "{contact:";
+      String json = "{contact:";
       json += i ;
       json += "}";
+      Serial.println(json);
+
     }
     // if it *was* touched and now *isnt*, alert!
     if (!(currtouched & _BV(i)) && (lasttouched & _BV(i)) ) {
-      json = "{released:";
+      String json = "{released:";
       json += i ;
       json += "}";
+
+      Serial.println(json);
     }
   }
 
-  Serial.println(json);
+  
 
   lasttouched = currtouched; //reset state
   delay(200);

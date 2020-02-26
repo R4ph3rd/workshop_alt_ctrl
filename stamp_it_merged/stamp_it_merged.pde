@@ -1,5 +1,5 @@
 import processing.serial.*;
-Serial myPort;
+Serial camPort;
 Serial contactPort;
 
 PVector pos, stampPos;
@@ -38,6 +38,9 @@ float obstaclePosMouv4 = 0;
 
 int b_length, b_height ;
 
+int charge_l, charge_r ;
+boolean rechargingStamp = false;
+
 ArrayList<TrucPousse> trucs = new ArrayList<TrucPousse>();
 
 void setup(){
@@ -46,10 +49,10 @@ void setup(){
 
   printArray(Serial.list()); 
   String portName = Serial.list()[1]; 
-  String contactPortName = Serial.list()[0];
-  myPort = new Serial(this, portName, 9600); 
+  String contactPortName = Serial.list()[2];
+  camPort = new Serial(this, portName, 9600); 
   contactPort = new Serial(this, contactPortName, 9600);
-  myPort.bufferUntil('\n');
+  camPort.bufferUntil('\n');
   contactPort.bufferUntil('\n');
   
   pos = new PVector(0, 0);
@@ -94,24 +97,23 @@ void draw(){
   
 
   world.step();
-  world.drawDebug();
- /* 
-  world.remove(obstacle);
-  world.remove(obstacle2);
-  world.remove(obstacle3);
-  world.remove(obstacle4);*/
+  world.draw();
   
   for ( Stamp stamp : stamps){
      world.remove(stamp.box); 
+  }
+  
+  if (rechargingStamp){
+     rechargeStamps(true);
   }
   
 }
 
 void serialEvent (Serial thisPort) {
   try { 
-    if ( thisPort == myPort){
-      while (myPort.available() > 0) {
-        String inBuffer = myPort.readString(); 
+    if ( thisPort == camPort){
+      while (camPort.available() > 0) {
+        String inBuffer = camPort.readString(); 
         if (inBuffer != null) {
           if (inBuffer.substring(0, 1).equals("{")) {
             JSONObject json = parseJSONObject(inBuffer); 
@@ -131,12 +133,41 @@ void serialEvent (Serial thisPort) {
     if ( thisPort == contactPort){
       String tt = contactPort.readString() ;
       JSONObject ttjson = parseJSONObject(tt);
-      //println(ttjson.getInt("contact"));
+      println(ttjson.getInt("contact"));
       
-      if ( ttjson.getInt("contact") == 1){
+      if ( ttjson.getInt("contact") == 8){
         stamps.add(new Stamp(
                     new PVector(stampPos.x, stampPos.y), angle));
+        println(ttjson);
+        
+        if ( ttjson.getInt("Tag_ID") == 12){
+          stamped(true);
+        }
+        
+        if (ttjson.getInt("Tag_ID") == 0){
+          stamped(false);
+        }
         delay(100);
+      }
+      
+      if ( ttjson.getInt("contact") == 5){
+        rechargingStamp = !rechargingStamp ;
+        println("recharge 5");
+      }
+      
+      if ( ttjson.getInt("contact") == 6){
+        rechargingStamp = !rechargingStamp ;
+        println("recharge 6 ");
+      }
+      
+      if (ttjson.getInt("released") == 5){
+        rechargingStamp = !rechargingStamp ;
+        println("released 5");      
+      }
+      
+      if (ttjson.getInt("released") == 6){
+        rechargingStamp = !rechargingStamp ;
+        println("released 6");      
       }
     }
     

@@ -60,7 +60,16 @@ void spawnerUpdate() {
   }
 
 
-void contactStarted(FContact c) { 
+void contactStarted(FContact c) {
+  
+  if (!c.getBody1().isStatic()) {
+    println("body1", c.getBody1().getX(), c.getBody1().getY());
+  }
+  
+  if (!c.getBody2().isStatic()) {
+    println("body2", c.getBody2().getX(), c.getBody2().getY());
+  }
+  
   if(c.getSeparation() < 0){
     //println((c.getVelocityX() + c.getVelocityY())/2);
     float c_size = map((c.getVelocityX() + c.getVelocityY())/2,0,2000,0,300);

@@ -42,3 +42,20 @@ class Stamp {
     
   }
 }
+
+
+void rechargeStamps(boolean stamp){
+    //if (stamp){
+      charge_r ++ ;
+    //} else {
+      charge_l ++ ;
+    //}
+}
+  
+void stamped(boolean stamp){
+  if (stamp){
+    charge_r -- ;
+  } else {
+    charge_l -- ;
+  }
+}
