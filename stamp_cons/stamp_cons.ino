@@ -1,10 +1,18 @@
 #include <Wire.h>
 #include "Adafruit_MPR121.h"
+#include <FastLED.h>
 
 Adafruit_MPR121 cap = Adafruit_MPR121();
 
 uint16_t lasttouched = 0;
 uint16_t currtouched = 0;
+
+
+// LEDs DE SECOURS
+#define NUM_LEDS 30
+#define DATA_PIN 6
+#define CLOCK_PIN 13
+CRGB leds[NUM_LEDS];
 
 void setup() {
   // put your setup code here, to run once:
@@ -23,12 +31,19 @@ void setup() {
     while (1);
   }
   Serial.println("MPR121 found!");
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
+  for (int i = 0 ; i < NUM_LEDS ; i ++){
+    leds[i] = CRGB(255, 255, 255);
+  }
+  
+  FastLED.show();
 }
 
 void loop() {
   currtouched = cap.touched();
   
-    for (uint8_t i=0; i<12; i++) {
+    for (uint8_t i = 5 ; i < 9; i++) {
     // it if *is* touched and *wasnt* touched before, alert!
     if ((currtouched & _BV(i)) && !(lasttouched & _BV(i)) ) {
       String json = "{contact:";
@@ -50,5 +65,5 @@ void loop() {
   
 
   lasttouched = currtouched; //reset state
-  delay(200);
+  delay(100);
 }

@@ -8,6 +8,16 @@ float angle = 0 ;
 ArrayList<Stamp> stamps = new ArrayList<Stamp>();
 FBox[] stamps_boxes = new FBox[30];
 
+// SOUND DESIGN
+import ddf.minim.*;
+Minim minim;
+AudioPlayer plop_1;
+AudioPlayer plop_2;
+AudioPlayer plop_3;
+AudioPlayer plop_4;
+AudioPlayer plop_5;
+AudioPlayer plop_6;
+
 // FISICA
 
 import fisica.*;
@@ -26,15 +36,7 @@ float xPos = 0;
 float obstacleMargin = 190;
 float speed = 2;
 
-float obstaclePosTop = 60;
-float obstaclePosTop2 = 460;
-float obstaclePosTop3 = 260;
-float obstaclePosTop4 = 660;
-
-float obstaclePosMouv = 0;
-float obstaclePosMouv2 = 0;
-float obstaclePosMouv3 = 0;
-float obstaclePosMouv4 = 0;
+boolean debounce = false ;
 
 int b_length, b_height ;
 
@@ -42,14 +44,15 @@ int charge_l, charge_r ;
 boolean rechargingStamp = false;
 
 ArrayList<TrucPousse> trucs = new ArrayList<TrucPousse>();
+ArrayList<Storage> items = new ArrayList<Storage>();
 
 void setup(){
   size(2300, 1800, P3D);
   smooth();
 
   printArray(Serial.list()); 
-  String portName = Serial.list()[1]; 
-  String contactPortName = Serial.list()[2];
+  String portName = Serial.list()[0]; 
+  String contactPortName = Serial.list()[1];
   camPort = new Serial(this, portName, 9600); 
   contactPort = new Serial(this, contactPortName, 9600);
   camPort.bufferUntil('\n');
@@ -59,6 +62,7 @@ void setup(){
   stampPos = new PVector(0, 0);
   
   initColliders();
+  initSounds();
   
   b_length = 350;
   b_height = 150;
@@ -68,7 +72,8 @@ void draw(){
   
   background(255, 255, 255);
 
-  stampPos.x = map(pos.x, 0, 100, 0, width);stampPos.y = map(pos.y, 0, 100, 0, height);
+  stampPos.x = map(pos.x, 0, 100, 0, width);
+  stampPos.y = map(pos.y, 0, 100, 0, height);
   
   
   pushMatrix();
@@ -107,6 +112,14 @@ void draw(){
      rechargeStamps(true);
   }
   
+  if (debounce){
+    playSample(triggerSample(moyenneStorage()));
+    debounce = !debounce ;
+  }
+  
+  if (frameCount % 50 == 0 && speed < 8) speed += .005 ;
+  
+  
 }
 
 void serialEvent (Serial thisPort) {
@@ -122,6 +135,8 @@ void serialEvent (Serial thisPort) {
               
               pos.set(json.getInt("pos_x"), json.getInt("pos_y"));
               angle = json.getFloat("rotation");
+              
+              println(json);
               
               
             }  
