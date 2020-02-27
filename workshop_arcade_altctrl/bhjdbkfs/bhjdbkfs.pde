@@ -116,6 +116,7 @@ void spawnerUpdate() {
       }
     }
   }
+  
 void obstacle(){
   obstacle = new FPoly();
   obstacle.vertex(width-sideMargin, obstaclePosTop+60);
@@ -190,19 +191,26 @@ void obstacle(){
 }
 
 void contactStarted(FContact c) {
-  //println(c.getBody1());
-  //if (!c.getBody1().isStatic()) {
-  //  println("body1", c.getBody1().getX(), c.getBody1().getY());
-  //  trucs.add(new TrucPousse(c.getBody1().getX(), c.getBody1().getY()));
-  //}
   
-  //if (!c.getBody2().isStatic()) {
-  //  println("body2", c.getBody2().getX(), c.getBody2().getY());
-  //  trucs.add(new TrucPousse(c.getBody2().getX(), c.getBody2().getY()));
-  //}
+  if (c.getBody1().isStatic()) {
+    c.getBody1().setFill(0,255,0);
+    c.getBody1().setStroke(0,255,0);
+    for(int j = 255; j <= 0; j--){
+      c.getBody1().setFill(0,j,0);
+      c.getBody1().setStroke(0,j,0);
+    }
+  }
+  
+  if (c.getBody2().isStatic()) {
+    c.getBody2().setFill(0,255,0);
+    c.getBody2().setStroke(0,255,0);
+    for(int j = 255; j <= 0; j--){
+      c.getBody2().setFill(0,j,0);
+      c.getBody2().setStroke(0,j,0);
+    }
+  }
   
   if(c.getSeparation() <0){
-    println((c.getVelocityX() + c.getVelocityY())/2);
     trucs.add(new TrucPousse(c.getX(), c.getY(), map((c.getVelocityX() + c.getVelocityY())/2,0,1000,0,300)));
   }
 }
