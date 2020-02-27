@@ -32,8 +32,8 @@ void initColliders(){
   b.setFrequency(0);
   world.add(b);
   
-  FBox ground = new FBox(width * 2, 30);
-  ground.setPosition(0, height - 30);
+  ground = new FBox(width * 2, 30);
+  ground.setPosition(0, height - 90);
   ground.setFill(0);
   ground.setRestitution(20);
   ground.setStatic(true);
@@ -41,13 +41,11 @@ void initColliders(){
 }
 
 
-void spawnerUpdate() {
+void updateCollideAnim() {
   for (int i = 0; i < trucs.size(); i++) {
       TrucPousse t = trucs.get(i);
+      t.update();
       t.display();
-      t.ypos -= speed;
-      t.size = t.size + (t.radius/20);
-      t.opa --;
       if(t.ypos < -50){
         trucs.remove(i);
       }
@@ -57,20 +55,31 @@ void spawnerUpdate() {
         }
       }
     }
+    
+  for (int i = 0 ; i < boxes.size(); i ++){
+    AnimBoxes box = boxes.get(i);
+    box.update();
+    box.display();
+    
+    if (!box.shouldKeep()) boxes.remove(i);
   }
+}
 
 
 void contactStarted(FContact c) {
   
-  if (!c.getBody1().isStatic()) {
-    //println("body1", c.getBody1().getX(), c.getBody1().getY());
+  // check pos of the drop
+  if (!c.getBody1().isStatic() || !c.getBody2().isStatic()) {
+    if (c.getBody1().getY() < - 200 || c.getBody1().getY() > height){
+      println("oh");
+      isDropInScreen = false ;
+    }
   }
   
+  // tentative for animation by overlaying a rect on the shape which is fucking inaccessible
   if (!c.getBody2().isStatic()) {
-   // println("body2", c.getBody2().getX(), c.getBody2().getY());
+   //boxes.add(new AnimBoxes(c.getBody2().getX(), c.getBody2().getX(), c.getBody2().getRotation()));
   }
-  
-  //println(c.getSeparation());
   
   if(c.getSeparation() < 0.2){
     //println((c.getVelocityX() + c.getVelocityY())/2);
@@ -94,7 +103,13 @@ class TrucPousse {
     this.ypos = ypos;
     this.radius = radius;
   }
-
+  
+  void update(){
+    opa -- ;
+    ypos -= speed;
+    size += radius/20;
+  }
+  
   void display() {
     pushStyle();
       fill(0, 0, 0, opa);
@@ -104,6 +119,49 @@ class TrucPousse {
   }
 }
 
+
+class AnimBoxes{
+ 
+  float x, y, angle;
+  int l, h;
+  
+  AnimBoxes(float x, float y, float angle){
+    this.x = map(x, 20, 90, 0, width);
+    this.y = map(y, 20, 90, 0, height);
+    this.angle = angle;
+    l = 0 ;
+    h = 0;
+  }
+  
+  void update(){
+    l += 10 ;
+    h += 10;
+    y -= speed ;
+  }
+  
+  boolean shouldKeep(){
+     if (y < - b_length ) return false;
+     if ( l == b_length) return false;
+     return true;
+  }
+  
+  void display() {
+    pushMatrix();
+    pushStyle();
+      translate(x,y);
+      rotate(angle);
+      
+      noStroke();
+      fill(#8FB2FF);
+      rect(0 - (b_length/2), 0 - (b_height/2), b_length, b_height);
+    
+    popMatrix();
+    popStyle();
+  }
+}
+
+
+// storage to stock values waiting for create a moyenne to set the correct sound
 
 class Storage{
  
