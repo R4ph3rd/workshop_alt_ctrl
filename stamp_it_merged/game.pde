@@ -26,15 +26,12 @@ void waitingForStart(){
   stroke(0,50);
   rect(oneplayer.x, oneplayer.y, b_length, b_height);
   rect(twoplayers.x, twoplayers.y, b_length, b_height);
+  image(solo, oneplayer.x + 100, oneplayer.y);
+  image(multi, twoplayers.x + 100, twoplayers.y);
   
   fill(0, 80);
   PVector selecterConverted = posConverter(selecter.y, selecter.x);
   rect(selecterConverted.x, selecterConverted.y, b_length, b_height);
- 
-
-  
-  
- 
 }
 
 void looseGame(){
@@ -67,32 +64,55 @@ void displayScore() {
 }
 
 void displayScreenLoose(){
+screenLoose = true ;
+  startGame = !startGame ;
+  String looseSentence = "";
+  int xblue, xred ;
+  
   background(255);
   
   if (players){
 
-    String looseSentence = "";
-    if (score1 < score2){
-        looseSentence = "Blue player is a looser";
-    }
-    if (score1 > score2){
-      looseSentence = "Red player is a looser";
-    }
-    if ( score1 == score2){
-     looseSentence = "Both of you are loosers"; 
+    if (isPlayerGuilty){
+      if(!lastPlayerTouched){
+        looseSentence = " Blue player flied up to infinity and beyond...";
+        fill(red);
+        xred = height/2;
+        xblue = height * 10 ;
+      } else {
+        looseSentence = " Red player flied up to infinity and beyond...";
+        fill(blue);
+        xblue = height/2;
+        xred = height * 10 ;
+      }
+    } else {
+      xblue = height/2 - 300;
+      xred = height/2 + 300;
+      if (score1 < score2){
+        fill(red);
+          looseSentence = "Blue player is a looser";
+      }
+      if (score1 > score2){
+        fill(blue);
+        looseSentence = "Red player is a looser";
+      }
+      if ( score1 == score2){
+        fill(0);
+       looseSentence = "Both of you are loosers"; 
+      }
     }
     
-    fill(0);
+    
     textSize(90);
     textAlign(CENTER);
     textFont(f);
     text(looseSentence, height/2, width/2 - 150);
     
-    text("Score blue", height/2 - 300, width/2 );
-    text("Score red", height/2 + 300, width/2 );
+    text("Score blue", xblue, width/2 );
+    text("Score red", xred, width/2 );
     
-    text(score1, height/2 - 300, width/2 + 150);
-    text(score2, height/2 + 300, width/2 + 150);
+    text(score1, xblue, width/2 + 150);
+    text(score2, xred, width/2 + 150);
     
   } else {
     fill(0);
@@ -123,8 +143,8 @@ void displayScreenLoose(){
     text(score, height/2, width/2 + 130);
   }
     
-        textFont(f);
-        text("Press the button to start", height/2, width/2 + 280);
+  textFont(f);
+  text("Press the button to start", height/2, width/2 + 280);
 }
 
  

@@ -93,14 +93,16 @@ void contactStarted(FContact c) {
     
     if (c.getBody2().isStatic()) {
       if (players){
-        print("body2", c.getBody2().getFillColor());
-          if (c.getBody2().getFillColor() == red){
-             score2 ++; 
-          }
-          if (c.getBody2().getFillColor() == blue){
+        //print("body2", c.getBody2().getFillColor());
+        if (c.getBody2().getFillColor() == blue){
              score1 ++; 
-          }
+             lastPlayerTouched = false ;
         }
+        if (c.getBody2().getFillColor() == red){
+           score2 ++; 
+           lastPlayerTouched = true ;
+        }
+    }
         
       c.getBody2().setFill(0,60);
       c.getBody2().setStroke(0,20);
