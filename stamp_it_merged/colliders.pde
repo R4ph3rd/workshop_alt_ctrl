@@ -30,6 +30,7 @@ void initColliders(){
   b.setDamping(0);
   b.setDensity(10);
   b.setFrequency(0);
+ println( b.getX());
   world.add(b);
   
   ground = new FBox(width * 2, 30);
@@ -72,7 +73,7 @@ void contactStarted(FContact c) {
   if (!c.getBody1().isStatic() || !c.getBody2().isStatic()) {
     if (c.getBody1().getY() < - 200 || c.getBody1().getY() > height){
       println("oh");
-      isDropInScreen = false ;
+     //    isDropInScreen = false ;
     }
   }
   

@@ -109,6 +109,6 @@ void serialEvent (Serial thisPort) {
 // DEBUG
 void keyPressed(){
   if (key == TAB){
-    looseGame();
+    isDropInScreen = !isDropInScreen;
   }
 }
