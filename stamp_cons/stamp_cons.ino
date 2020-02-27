@@ -20,7 +20,7 @@ const int FSR_PIN_r = A0;
 const int FSR_PIN_l = A2;
 const float VCC = 4.98;
 const float R_DIV = 3230.0;
-
+const float seuil = 500 ;
 
 void setup() {
   // put your setup code here, to run once:
@@ -87,7 +87,7 @@ void loop() {
       force = (calculateConductance(fsrADC_r) - 0.00075) / 0.00000032639;
     else{
       force =  calculateConductance(fsrADC_r) / 0.000000642857;
-      if (force >= 800){
+      if (force >= seuil + 200){
         Serial.println("{force_r: " + String(force) + "}");
       }
     }
@@ -102,7 +102,7 @@ void loop() {
       force = (calculateConductance(fsrADC_l) - 0.00075) / 0.00000032639;
     else{
       force =  calculateConductance(fsrADC_l) / 0.000000642857;
-      if (force >= 500){
+      if (force >= seuil){
         Serial.println("{force_l: " + String(force) + "}");
       }
     }

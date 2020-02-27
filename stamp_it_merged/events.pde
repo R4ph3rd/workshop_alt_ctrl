@@ -6,7 +6,18 @@ void serialEvent (Serial thisPort) {
         if (inBuffer != null) {
           if (inBuffer.substring(0, 1).equals("{")) {
             JSONObject json = parseJSONObject(inBuffer); 
-            if (json != null) { 
+            if (json != null) {
+              
+              //two players waiting 
+              if (!startGame){
+                if (json.get("l_pos_x") != null){
+                  selecter.set(json.getInt("l_pos_x"), json.getInt("l_pos_y"));
+                }
+                if (json.get("r_pos_x") != null){
+                  selecter.set(json.getInt("r_pos_x"), json.getInt("r_pos_y"));
+                }
+              }
+              
               if (json.get("l_pos_x") != null){
                  pos[0].set(json.getInt("l_pos_x"), json.getInt("l_pos_y"));
                  angle[0] = json.getFloat("l_rotation");
@@ -42,16 +53,20 @@ void serialEvent (Serial thisPort) {
       // start game
       if (ttjson.get("start") != null){
         if (ttjson.getInt("start") == 1){
-          startGame = true ;
-          screenLoose = false; 
-          timerCallbackInfo = "[finished]";
+          restart();
+        }
+      }
+      //two players 
+      if (!startGame){
+        if ( ttjson.get("force_l") != null || ttjson.get("force_r") != null ){
+            selectPlayers();
         }
       }
 
       // is r stamp stamping on board ?
       if ( ttjson.get("force_l") != null && lStampIsOnScreen && charge_l > 0 ){
         if ( ttjson.getInt("force_l") >= 500){
-          stamps.add(new Stamp( new PVector(stampPos[0].x, stampPos[0].y), angle[0]));        
+          stamps.add(new Stamp( new PVector(stampPos[0].x, stampPos[0].y), angle[0], false));        
           stamped(false);
         }
       }
@@ -60,7 +75,7 @@ void serialEvent (Serial thisPort) {
       if ( ttjson.get("force_r") != null && rStampIsOnScreen && charge_r > 0 ){
         //println("stamping right");
         if ( ttjson.getInt("force_r") >= 700){
-          stamps.add(new Stamp( new PVector(stampPos[1].x, stampPos[1].y), angle[1]));        
+          stamps.add(new Stamp( new PVector(stampPos[1].x, stampPos[1].y), angle[1], true));        
           stamped(true);
         }
       }
@@ -68,14 +83,15 @@ void serialEvent (Serial thisPort) {
       
       // is a stamp recharging ?
       if (ttjson.get("contact") != null){
-        if (( ttjson.getInt("contact") == 5 || ttjson.getInt("contact") == 6)){
-          rechargingStamp.x = 1 ;
+        
+          //rechargingStamp.x = 1 ;
          // println("recharging");
-        }
+        if (ttjson.getInt("contact") == 6) rechargingStamp.x = 1 ;
+        if (ttjson.getInt("contact") == 5) rechargingStamp.y = 1 ;
       }
           
       // so now, which stamp is recharging ?
-      if (rechargingStamp.x == 1){
+      /*if (rechargingStamp.x == 1){
         if (ttjson.get("force_l") != null && !lStampIsOnScreen){
           if (ttjson.getFloat("force_l") >= forceStamp){
             rechargingStamp.y = 0; // x == is a stamprecharge in contact w/ stamp, y == which stamp, 0 left
@@ -91,13 +107,13 @@ void serialEvent (Serial thisPort) {
               //println("recharging right", ttjson.get("force_r"));
             }
           }
-        } 
+        } */
  
         if (ttjson.get("released") != null){
-          if ( ttjson.getFloat("released") == 5 || ttjson.getFloat("released") == 6){
-            rechargingStamp.set(0, 2, 0) ; // nothing 
+            //rechargingStamp.set(0, 2, 0) ; // nothing 
+            if (ttjson.getInt("released") == 6) rechargingStamp.x = 0 ;
+            if (ttjson.getInt("released") == 5) rechargingStamp.y = 0 ;
             //println("released");
-          }
         }
       }
   }

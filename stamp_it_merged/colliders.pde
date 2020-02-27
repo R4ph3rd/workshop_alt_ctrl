@@ -21,7 +21,7 @@ void initColliders(){
 
   //Blob popping
   b = new FBlob();
-  b.setAsCircle(height/2, 20, 40, 50); 
+  b.setAsCircle(height/2, 20, 50, 20); 
   b.setStroke(0);
   b.setStrokeWeight(0);
   b.setFill(0);
@@ -69,20 +69,60 @@ void updateCollideAnim() {
 
 
 void contactStarted(FContact c) {
-   
-  // tentative for animation by overlaying a rect on the shape which is fucking inaccessible
-  if (!c.getBody2().isStatic()) {
-   //boxes.add(new AnimBoxes(c.getBody2().getX(), c.getBody2().getX(), c.getBody2().getRotation()));
-  }
   
-  if(c.getSeparation() < 0.2){
-    //println((c.getVelocityX() + c.getVelocityY())/2);
-    float c_size = map((c.getVelocityX() + c.getVelocityY())/2,0,2000,0,300);
-    c_size = constrain(c_size, 0, 300.0);
-    trucs.add(new TrucPousse(c.getX(), c.getY(), c_size));
+  if (!debounceContact){  
+    debounceContact = true ;
+    if (players){
+        print("body1", c.getBody1().getFillColor(), " ", red);
+        if (c.getBody1().getFillColor() == red){
+           score2 ++; 
+        }
+        if (c.getBody1().getFillColor() == blue){
+           score1 ++; 
+        }
+      }
+    // tentative for animation by overlaying a rect on the shape which is fucking inaccessible
+    if (c.getBody1().isStatic()) {
+      c.getBody1().setFill(0,60);
+      c.getBody1().setStroke(0,20);
+      for(int j = 255; j <= 0; j--){
+        c.getBody1().setFill(0,j,0);
+        c.getBody1().setStroke(0,j,0);
+      }
+    }
     
-    debounce = true ;  
+    if (c.getBody2().isStatic()) {
+      if (players){
+        print("body2", c.getBody2().getFillColor());
+          if (c.getBody2().getFillColor() == red){
+             score2 ++; 
+          }
+          if (c.getBody2().getFillColor() == blue){
+             score1 ++; 
+          }
+        }
+        
+      c.getBody2().setFill(0,60);
+      c.getBody2().setStroke(0,20);
+      for(int j = 255; j <= 0; j--){
+        c.getBody2().setFill(0,j,0);
+        c.getBody2().setStroke(0,j,0);
+      }
+    }
+  
+    if(c.getSeparation() < 0.2){
+      //println((c.getVelocityX() + c.getVelocityY())/2);
+      float c_size = map((c.getVelocityX() + c.getVelocityY())/2,0,2000,0,300);
+      c_size = constrain(c_size, 0, 300.0);
+      trucs.add(new TrucPousse(c.getX(), c.getY(), c_size));
+      
+      debounce = true ;  
+    }
   }
+}
+
+void contactEnded(FContact c){
+    debounceContact = false ;
 }
 
 class TrucPousse {
