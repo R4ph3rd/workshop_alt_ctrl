@@ -87,7 +87,7 @@ void loop() {
       force = (calculateConductance(fsrADC_r) - 0.00075) / 0.00000032639;
     else{
       force =  calculateConductance(fsrADC_r) / 0.000000642857;
-      if (force >= 500){
+      if (force >= 800){
         Serial.println("{force_r: " + String(force) + "}");
       }
     }

@@ -4,15 +4,15 @@ void initColliders(){
   world = new FWorld();
   world.setGravity(0, +250);
   
-  FBox side_l = new FBox(80, height * 2);
+  FBox side_l = new FBox(80, width * 2);
   side_l.setPosition(0, 0);
   side_l.setFill(0);
   side_l.setStatic(true);
   side_l.setFriction(1);
   world.add(side_l);
   
-  FBox side_r = new FBox(80, height * 2);
-  side_r.setPosition(width, 0);
+  FBox side_r = new FBox(80, width * 2);
+  side_r.setPosition(height, 0);
   side_r.setFill(0);
   side_r.setStatic(true);
   side_r.setFriction(1);
@@ -21,7 +21,7 @@ void initColliders(){
 
   //Blob popping
   b = new FBlob();
-  b.setAsCircle(width/2, 20, 30, 20); 
+  b.setAsCircle(height/2, 20, 40, 50); 
   b.setStroke(0);
   b.setStrokeWeight(0);
   b.setFill(0);
@@ -30,15 +30,16 @@ void initColliders(){
   b.setDamping(0);
   b.setDensity(10);
   b.setFrequency(0);
- println( b.getX());
+ //println( b.getX());
   world.add(b);
   
-  ground = new FBox(width * 2, 30);
-  ground.setPosition(0, height - 90);
+  // debug
+  /*ground = new FBox(width * 2, 30);
+  ground.setPosition(0, width - 90);
   ground.setFill(0);
   ground.setRestitution(20);
   ground.setStatic(true);
-  world.add(ground);
+  world.add(ground);*/
 }
 
 
@@ -68,15 +69,7 @@ void updateCollideAnim() {
 
 
 void contactStarted(FContact c) {
-  
-  // check pos of the drop
-  if (!c.getBody1().isStatic() || !c.getBody2().isStatic()) {
-    if (c.getBody1().getY() < - 200 || c.getBody1().getY() > height){
-      println("oh");
-     //    isDropInScreen = false ;
-    }
-  }
-  
+   
   // tentative for animation by overlaying a rect on the shape which is fucking inaccessible
   if (!c.getBody2().isStatic()) {
    //boxes.add(new AnimBoxes(c.getBody2().getX(), c.getBody2().getX(), c.getBody2().getRotation()));
@@ -127,8 +120,8 @@ class AnimBoxes{
   int l, h;
   
   AnimBoxes(float x, float y, float angle){
-    this.x = map(x, 20, 90, 0, width);
-    this.y = map(y, 20, 90, 0, height);
+    this.x = map(x, 147, 13, 0, height);
+    this.y = map(y, 101, 14, 0, width);
     this.angle = angle;
     l = 0 ;
     h = 0;
