@@ -32,6 +32,7 @@ float obstaclePosMouv3 = 0;
 float obstaclePosMouv4 = 0;
 
 ArrayList<TrucPousse> trucs = new ArrayList<TrucPousse>();
+voider Voider1 = new voider(); 
 
 void setup() {
   size(500, 700);
@@ -81,10 +82,14 @@ void setup() {
   b.setDensity(10);
   b.setFrequency(0);
   world.add(b);
+  
+  
 }
 
 void draw() {
   background(255, 255, 255);
+  
+  Voider1.display(600,630);
   spawnerUpdate();
   
   obstacle();
