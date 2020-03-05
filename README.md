@@ -3,7 +3,7 @@
 Ici description projet  
 
 Ce projet a été réalisés par 4 étudiants d'interaction et game design de [L'Ecole de design Nantes Atlantique](https://www.lecolededesign.com/) : 
-[Emilie Schaffer](), [Riwan Madjitate](), [Théo Geiller](http://theogeiller.com/), [Raphaël Perraud](http://raphaelperraud.com/#/)
+[Emilie Schaffer](www.emilie-schaefer.com), [Riwan Madjitate](https://www.fichier-pdf.fr/2020/02/17/riwan-majidate-portfolio-2020/), [Théo Geiller](http://theogeiller.com/), [Raphaël Perraud](http://raphaelperraud.com/#/)
 
 ## Hardware setup
 Voici le matériel requis pour construire la borne d'arcarde :
