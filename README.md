@@ -377,7 +377,73 @@ if (!isDropInScreen) { // si la goutte est en dehors, le(s) a/ont perdu
 ```
 
 #### Physique du jeu
-@todo fisica, création physique, éléments de physique
+Nous avions besoin pour la gravité d'une physique, on a utilisé fisica pour avoir des effet de rebonds sur notre tache d'encre.
+
+##### L'environnement
+après avoir importé la librairie, nous déclarons une variable "world" de type FWorld appartenant a fisica.
+```java
+import fisica.*;
+FWorld world;
+
+void setup() {
+  size(500, 700);
+  Fisica.init(this);
+
+  world = new FWorld();
+  world.setGravity(0, +250);
+}
+```
+l'objet world peut ensuite subir des modifications grace a .setGravity dans l'exemple ci-dessus. 
+
+##### Les bordures
+```java
+//left side
+  FPoly l = new FPoly();
+  l.vertex(0+sideMargin, 0);
+  l.vertex(0, 0);
+  l.vertex(0, height);
+  l.vertex(0+sideMargin, height);
+  l.vertex(0+sideMargin, height-bottomMargin);
+  l.setStatic(true);
+  l.setFill(0);
+  l.setFriction(1);
+  world.add(l);
+
+
+  //right side
+  FPoly r = new FPoly();
+  r.vertex(width-sideMargin, 0);
+  r.vertex(width, 0);
+  r.vertex(width, height);
+  r.vertex(width-sideMargin, height);
+  r.setStatic(true);
+  r.setFill(0);
+  r.setFriction(1);
+  world.add(r);
+  ```
+  
+  Toujours dans le setup nous allons definir des obstacle dans notre world en ajoutant des FPoly.
+  en modifiant la propriété de l'objet sur setStatic(true); nous le faisons devenir un obstacle statique.
+  Nous pourrons modifier les paramètre de cet objet pour ajuster les effet physique de collision.
+##### L'agent
+```java
+ //Blob popping
+  FBlob b = new FBlob();
+  b.setAsCircle(width/2, 20, 30, 20);
+  b.setStroke(0);
+  b.setStrokeWeight(0);
+  b.setFill(255);
+  world.add(b);
+```
+Puis en ajoutant un objet FBlob, nous avont un agent qui réagirat et subira la gravité ou autres caractéristique du world fisica
+##### Update & Draw
+```java
+void draw() {
+  world.step();
+  world.draw();
+}
+```
+Enfin, dans le draw on utilisera une fonction d'update (world.step()) et une foction de dessin (world.draw()).
 
 #### Fonctions annexes
 ##### Fonctions relatives au statut de jeu
