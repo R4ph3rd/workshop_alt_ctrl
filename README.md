@@ -2,7 +2,6 @@
 <br>
 <img width="800" src="/assets/doc/Title.png" alt="totem-panic">
 <br>
-<br>
 <img width="800" src="/assets/doc/Keyword.png" alt="totem-panic">
 <br>
 <img width="600" src="/assets/doc/Built.png" alt="built">
